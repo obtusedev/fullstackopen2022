@@ -4,6 +4,9 @@ FREE Full Stack course/mooc from the University of Helsinki.
 
 - https://fullstackopen.com/en/about
 
+Commit msg format: Part #: Main msg - smaller msg
+Part 1: Update App - add component
+
 ## Table of Contents
 
 - Part 0  - Fundamentals of Web apps
@@ -21,3 +24,7 @@ FREE Full Stack course/mooc from the University of Helsinki.
 - Part 12 - Containers
 - Part 13 - Using relational databases
 
+## Progress
+
+- Part 0 - 2022-03-30
+- Part 1 - 
