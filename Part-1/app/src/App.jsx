@@ -1,26 +1,23 @@
-const Hello = ({ name, age }) => {
-  const bornYear = () => new Date().getFullYear() - age;
-  return (
-    <div>
-      <p>
-        Hello {name}, you are {age} years old
-      </p>
-      <p>Your birth year is probably {bornYear()}</p>
-    </div>
-  )
-}
+import { useState } from "react";
 
 const App = () => {
-  const name = 'Peter'
-  const age = 10
+    const [counter, setCounter] = useState(0);
 
-  return (
-    <div>
-      <h1>Greetings</h1>
-      <Hello name="Maya" age={26 + 10} />
-      <Hello name={name} age={age} />
-    </div>
-  )
-}
+    const incrementCounter = () => setCounter(counter + 1);
+
+    const resetCounter = () => setCounter(0);
+
+    return (
+        <div>
+            <div>{counter}</div>
+            {/* You can also do
+          <button onClick={() => console.log("Clicked")}>Increment</button>
+          this forces the component to re-render.
+        */}
+            <button onClick={incrementCounter}>Increment</button>
+            <button onClick={resetCounter}>Reset</button>
+        </div>
+    );
+};
 
 export default App;
