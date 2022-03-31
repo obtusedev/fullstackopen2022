@@ -14,20 +14,26 @@ const App = () => {
     const [selected, setSelected] = useState(0);
     const [votes, setVotes] = useState({});
 
+    const mostVotes = Number.isInteger(Math.max(...Object.values(votes, 1)))
+        ? Math.max(...Object.values(votes, 1))
+        : null;
+
     const changeAnecdotes = () => {
         let rand = Math.floor(Math.random() * anecdotes.length);
         setSelected(rand);
     };
     const incrementVote = () => {
         setVotes({ ...votes, [selected]: votes[selected] + 1 || 1 });
-        console.log(votes);
     };
     return (
         <div>
+            <h1>Anecdote of the day</h1>
             <p>{anecdotes[selected]}</p>
             <p>has {votes[selected] || 0} votes</p>
             <button onClick={incrementVote}>vote</button>
             <button onClick={changeAnecdotes}>next ancedote</button>
+            <h1>Anecdote with the most votes</h1>
+            <p>{anecdotes[mostVotes]}</p>
         </div>
     );
 };
