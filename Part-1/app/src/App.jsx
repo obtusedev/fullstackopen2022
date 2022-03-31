@@ -7,6 +7,9 @@ const Button = ({ text, onClick }) => {
 };
 
 const Statistics = ({ good, neutral, bad, total }) => {
+    if (good === 0 && neutral === 0 && bad === 0) {
+        return <p>No feedback given</p>;
+    }
     return (
         <div>
             <p>good {good}</p>
