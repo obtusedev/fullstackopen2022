@@ -6,12 +6,15 @@ const Button = ({ text, onClick }) => {
     return <button onClick={onClick}>{text}</button>;
 };
 
-const Tally = ({ good, neutral, bad }) => {
+const Statistics = ({ good, neutral, bad, total }) => {
     return (
         <div>
             <p>good {good}</p>
             <p>neutral {neutral}</p>
             <p>bad {bad}</p>
+            <p>total {total}</p>
+            <p>average {(good - bad) / total}</p>
+            <p>positive {(good / total) * 100}%</p>
         </div>
     );
 };
@@ -33,7 +36,9 @@ const App = () => {
             <Button text="neutral" onClick={handleNeutral} />
             <Button text="bad" onClick={handleBad} />
             <Heading text="statistics" />
-            <Tally {...{ good, neutral, bad }} />
+            <Statistics
+                {...{ good, neutral, bad, total: good + neutral + bad }}
+            />
         </div>
     );
 };
