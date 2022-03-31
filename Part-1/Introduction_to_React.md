@@ -86,3 +86,115 @@ const App = () => {
   )
 }
 ```
+
+Browsers do not support all the latest features that JavaScript has to offer.  
+This is why does has to be *transpiled* from a newer version of JavaScript to an older version of JavaScript that the browser can understand.
+
+The most popular tool for this is [Babel](https://babeljs.io/).
+> I know that most web bundlers like Webpack and Parcel use Babel under the hood.
+
+Simple example of using React hooks & state:
+
+```jsx
+import { useState } from "react";
+
+const App = () => {
+    const [counter, setCounter] = useState(0);
+
+    setTimeout(() => {
+        setCounter(counter + 1), 1000;
+    });
+
+    return <div>{counter}</div>;
+};
+
+export default App;
+```
+
+In the above example, `counter` is set to `0` initially as defined in `useState()`.  
+`setCounter()` is then used to modify the state. In this example it will increment counter by 1 for every second (1000ms = 1s).
+
+When `setCounter()` is called, React re-renders the component meaning `setTimeout()` gets called again.
+
+
+Setting state mistakes:
+
+The reason why the last 2 are not allowed is because it *mutates state directly* and this could have unexpected side effects:
+
+```jsx
+const plus = () => setCounter(counter + 1); //ok
+const plus = () => setCounter(counter++);   //wrong
+const plus = () => setCounter(counter += 1);//wrong
+```
+
+Passing events mistakes:
+
+```jsx
+<button onClick={setCounter(counter + 1)}>plus</button>       //wrong
+<button onClick={() => setCounter(counter + 1)}>plus</button> // ok
+```
+
+First example is wrong because an event handler is supposed to be a *function* or *function reference* and not a *function call*. You can also return a function that returns another function (closure).
+
+```jsx
+function hello() {
+    const handler = () => {
+        console.log("Hello");
+    }
+    return handler;
+}
+
+// Arrow function returning another arrow function
+// Slightly more confusing but more concise
+const Hello = () => () => {
+    console.log("Hello");
+}
+
+```
+
+If you use arrays in `useState()` make sure to use pure functions like `concat()` rather than `push()` as push modifies the original array while concat returns a copy.
+
+Do not use React hooks from inside a loop, a conditional expression, or any place that is not a function defining a component.
+
+This is to ensure that hooks are always called in the same order.
+
+```jsx
+const App = () => {
+  // these are ok
+  const [age, setAge] = useState(0)
+  const [name, setName] = useState('Juha Tauriainen')
+
+  if ( age > 10 ) {
+    // this does not work!
+    const [foobar, setFoobar] = useState(null)
+  }
+
+  for ( let i = 0; i < age; i++ ) {
+    // also this is not good
+    const [rightWay, setRightWay] = useState(false)
+  }
+
+  const notGood = () => {
+    // and this is also illegal
+    const [x, setX] = useState(-1000)
+  }
+
+  return (
+    //...
+  )
+}
+```
+
+Do not define components within another component:
+
+```jsx
+const App = () => {
+    // Don't do this. Instead move it outside App
+    const Display = props => <div>{props.something}</div>; // No no
+    return (
+        <div>App</div>
+    )
+}
+
+export default App;
+```
