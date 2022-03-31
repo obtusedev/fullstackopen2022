@@ -1,7 +1,6 @@
-- `npx create-react-app app` - fast way to start a react app.
-> I personally prefer vite as it is faster and easier to use and setup.
-> `npm init @vite-latest app` then follow the prompts.
-
+-   `npx create-react-app app` - fast way to start a react app.
+    > I personally prefer vite as it is faster and easier to use and setup.
+    > `npm init @vite-latest app` then follow the prompts.
 
 JSX is xml like. Babel is used under the hood to transform JSX into JavaScript.
 You can write React without JSX instead using "raw JavaScript" but this is not recommended for your sanity.
@@ -9,11 +8,14 @@ You can write React without JSX instead using "raw JavaScript" but this is not r
 A core philosophy of React is to combine reusable components into a complex application while keeping the app maintainable.
 
 Passing props to components:
+
 ```jsx
 const Hello = props => {
     return (
         <div>
-            <p>Hello {props.name}, you are {props.age} years old</p>
+            <p>
+                Hello {props.name}, you are {props.age} years old
+            </p>
         </div>
     );
 };
@@ -73,24 +75,25 @@ You can avoid the extra `<div>` by using fragments.
 
 ```jsx
 const App = () => {
-  const name = 'Peter'
-  const age = 10
+    const name = "Peter";
+    const age = 10;
 
-  return (
-    <>
-      <h1>Greetings</h1>
-      <Hello name="Maya" age={26 + 10} />
-      <Hello name={name} age={age} />
-      <Footer />
-    </>
-  )
-}
+    return (
+        <>
+            <h1>Greetings</h1>
+            <Hello name="Maya" age={26 + 10} />
+            <Hello name={name} age={age} />
+            <Footer />
+        </>
+    );
+};
 ```
 
 Browsers do not support all the latest features that JavaScript has to offer.  
-This is why does has to be *transpiled* from a newer version of JavaScript to an older version of JavaScript that the browser can understand.
+This is why does has to be _transpiled_ from a newer version of JavaScript to an older version of JavaScript that the browser can understand.
 
 The most popular tool for this is [Babel](https://babeljs.io/).
+
 > I know that most web bundlers like Webpack and Parcel use Babel under the hood.
 
 Simple example of using React hooks & state:
@@ -116,15 +119,14 @@ In the above example, `counter` is set to `0` initially as defined in `useState(
 
 When `setCounter()` is called, React re-renders the component meaning `setTimeout()` gets called again.
 
-
 Setting state mistakes:
 
-The reason why the last 2 are not allowed is because it *mutates state directly* and this could have unexpected side effects:
+The reason why the last 2 are not allowed is because it _mutates state directly_ and this could have unexpected side effects:
 
 ```jsx
 const plus = () => setCounter(counter + 1); //ok
-const plus = () => setCounter(counter++);   //wrong
-const plus = () => setCounter(counter += 1);//wrong
+const plus = () => setCounter(counter++); //wrong
+const plus = () => setCounter((counter += 1)); //wrong
 ```
 
 Passing events mistakes:
@@ -134,13 +136,13 @@ Passing events mistakes:
 <button onClick={() => setCounter(counter + 1)}>plus</button> // ok
 ```
 
-First example is wrong because an event handler is supposed to be a *function* or *function reference* and not a *function call*. You can also return a function that returns another function (closure).
+First example is wrong because an event handler is supposed to be a _function_ or _function reference_ and not a _function call_. You can also return a function that returns another function (closure).
 
 ```jsx
 function hello() {
     const handler = () => {
         console.log("Hello");
-    }
+    };
     return handler;
 }
 
@@ -148,13 +150,14 @@ function hello() {
 // Slightly more confusing but more concise
 const Hello = () => () => {
     console.log("Hello");
-}
-
+};
 ```
 
 If you use arrays in `useState()` make sure to use pure functions like `concat()` rather than `push()` as push modifies the original array while concat returns a copy.
 
-Do not use React hooks from inside a loop, a conditional expression, or any place that is not a function defining a component.
+Do not use React hooks from inside a loop, a conditional expression, or any place that is not a function defining a component. Declare them at the top level of your React function.
+
+Note that this is does not refer to `setName()` or examples like this.
 
 This is to ensure that hooks are always called in the same order.
 
@@ -191,10 +194,23 @@ Do not define components within another component:
 const App = () => {
     // Don't do this. Instead move it outside App
     const Display = props => <div>{props.something}</div>; // No no
-    return (
-        <div>App</div>
-    )
-}
+    return <div>App</div>;
+};
 
 export default App;
+```
+
+Passing props as object to component that destructures:
+
+```jsx
+
+let obj = {
+    a,
+    b,
+    c
+}
+
+<MyJSX {...object} />
+<MyJSX {...{a, b, c}} /> // simpler
+
 ```
