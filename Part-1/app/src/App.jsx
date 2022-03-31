@@ -1,5 +1,13 @@
 import { useState } from "react";
 
+const Display = props => {
+    return <div>{props.counter}</div>;
+};
+
+const Button = props => {
+    return <button onClick={props.onClick}>{props.text}</button>;
+};
+
 const App = () => {
     const [counter, setCounter] = useState(0);
 
@@ -9,13 +17,10 @@ const App = () => {
 
     return (
         <div>
-            <div>{counter}</div>
-            {/* You can also do
-          <button onClick={() => console.log("Clicked")}>Increment</button>
-          this forces the component to re-render.
-        */}
-            <button onClick={incrementCounter}>Increment</button>
-            <button onClick={resetCounter}>Reset</button>
+            <Display counter={counter} />
+
+            <Button text="plus" onClick={incrementCounter} />
+            <Button text="reset" onClick={resetCounter} />
         </div>
     );
 };
