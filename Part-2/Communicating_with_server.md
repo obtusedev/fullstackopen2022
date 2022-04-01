@@ -30,3 +30,62 @@ There are some situations where you don't need a key (from the article):
 3. The list is _never_ ordered or filtered.
 
 When _all_ 3 conditions are met, you **safely use the index as a key**.
+
+Controlled components:
+
+Event parameter is the event that triggers the call to the event handler function. The event handler calls `event.preventDefault()` to prevent the default behavior of submitting a form, which includes causing the page to reload.
+
+event is usually shortened to just `e`.
+
+```jsx
+const addNote = event => {
+    event.preventDefault();
+    console.log("saved!", event.target); // this will log the entire form below
+};
+
+<form onSubmit={addNote}>
+    <input type="text" />
+    <button type="submit">save</button>
+</form>;
+```
+
+Important to register a event handler to `onChange()` for input that way:
+
+-   The input value isn't just controlled by state.
+-   React can synchronize the changes with the components state.
+
+```jsx
+const [newNote, setNewNote] = useState("write here...");
+
+const handleNoteChange = event => {
+    console.log(event.target.value);
+    setnewNote(event.target.value);
+};
+<form onSubmit={addNote}>
+    <input type="text" value={newNote} onChange={handleNoteChange} />
+    <button type="submit">save</button>
+</form>;
+```
+
+The event handler is called everytime change occurs in the input element.
+Note that `event.preventDefault()` is **not** needed since there is no default action that occurs for input.
+
+React comments:
+
+```jsx
+
+{
+    // ok
+}
+
+{
+    /*
+    *
+    */
+}
+
+{//} // this will give errors
+// because the closing bracket } is considered to be part of the comment and is thus ignored, which throws an error. (https://stackoverflow.com/questions/30766441/how-to-use-comments-in-react)
+
+{/* */}
+```
