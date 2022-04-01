@@ -4,8 +4,12 @@ FREE Full Stack course/mooc from the University of Helsinki.
 
 - https://fullstackopen.com/en/about
 
-Commit msg format: Part #: Main msg - smaller msg
-Part 1: Update App - add component
+Commit msg format: Part #: commit msg
+
+## Changelog
+
+Since Part 2: b Forms:
+- Change commit message format for brevity.
 
 ## Table of Contents
 
@@ -27,4 +31,5 @@ Part 1: Update App - add component
 ## Progress
 
 - Part 0 - 2022-03-30
-- Part 1 - 
+- Part 1 - 2022-03-31
+- Part 2 - 
