@@ -1,4 +1,7 @@
 import { useState } from "react";
+import Filter from "./components/Filter";
+import PersonForm from "./components/PersonForm";
+import Persons from "./components/Persons";
 
 const dummyData = [
     { name: "Arto Hellas", number: "040-123456", id: 1 },
@@ -24,10 +27,6 @@ const App = () => {
         }
     };
 
-    const handleNameChange = e => setNewName(e.target.value);
-    const doesPersonExist = name =>
-        persons.find(person => person.name === name);
-
     const addPerson = e => {
         e.preventDefault();
         let person = {
@@ -45,13 +44,19 @@ const App = () => {
         setNewNumber(""); // reset number input
     };
 
+    const handleNameChange = e => setNewName(e.target.value);
+
+    const doesPersonExist = name =>
+        persons.find(person => person.name === name);
+
     const handleNumberChange = e => setNewNumber(e.target.value);
 
     const handleFilterInputChange = e => {
+        console.log("shut");
         // reset the matched names so you don't end up with duplicates
         setMatch([]);
         // if filter input is set to empty the just return all persons
-        if (e.target.value === "") return displayNumbers;
+        if (e.target.value === "") return;
         persons.filter(person => {
             if (
                 person.name.toLowerCase().includes(e.target.value.toLowerCase())
@@ -63,54 +68,30 @@ const App = () => {
         });
     };
 
-    const displayNumbers = () => {
+    const display = () => {
         if (match.length === 0) {
-            return persons.map(person => (
-                <p key={person.name}>
-                    {person.name} - {person.number}
-                </p>
-            ));
+            return <Persons persons={persons} />;
         } else {
-            return match.map(person => (
-                <p key={person.name}>
-                    {person.name} - {person.number}
-                </p>
-            ));
+            return <Persons persons={match} />;
         }
     };
 
     return (
         <div>
             <h2>Phonebook</h2>
-            filter show with
-            <input type="text" onChange={handleFilterInputChange} />
+            <Filter events={{ handleFilterInputChange }} />
             <h3>add a new</h3>
-            <form onSubmit={addPerson}>
-                <div>
-                    name:
-                    <input
-                        id="name"
-                        type="text"
-                        value={newName}
-                        onChange={handleNameChange}
-                        onClick={resetInput}
-                    />
-                    <br />
-                    number:
-                    <input
-                        id="number"
-                        type="text"
-                        value={newNumber}
-                        onChange={handleNumberChange}
-                        onClick={resetInput}
-                    />
-                </div>
-                <div>
-                    <button type="submit">add</button>
-                </div>
-            </form>
+            <PersonForm
+                events={{
+                    resetInput,
+                    addPerson,
+                    handleNameChange,
+                    handleNumberChange,
+                }}
+                values={{ newName, newNumber }}
+            />
             <h2>Numbers</h2>
-            {displayNumbers()}
+            {display()}
         </div>
     );
 };
