@@ -136,3 +136,57 @@ return match.map(person => {
     );
 });
 ```
+
+Passing handlers and events to the child form data rather than inside the form itself. Makes it easier to pass state from parent to child.
+
+`App.jsx`
+
+```jsx
+<PersonForm
+    events={{
+        resetInput,
+        addPerson,
+        handleNameChange,
+        handleNumberChange,
+    }}
+    values={{ newName, newNumber }}
+/>
+```
+
+`PersonForm.jsx`
+
+```jsx
+const PersonForm = ({ events, values }) => {
+    let { addPerson, resetInput, handleNameChange, handleNumberChange } =
+        events;
+    let { newName, newNumber } = values;
+    return (
+        <form onSubmit={addPerson}>
+            <div>
+                name:
+                <input
+                    id="name"
+                    type="text"
+                    value={newName}
+                    onChange={handleNameChange}
+                    onClick={resetInput}
+                />
+                <br />
+                number:
+                <input
+                    id="number"
+                    type="text"
+                    value={newNumber}
+                    onChange={handleNumberChange}
+                    onClick={resetInput}
+                />
+            </div>
+            <div>
+                <button type="submit">add</button>
+            </div>
+        </form>
+    );
+};
+```
+
+Pass a event function has `events{{handleClick}}` so that you can destructure it if needed.
