@@ -98,8 +98,41 @@ input - value, onChange, onClick
 ```jsx
 // keeps the value in sync with state.
 const handleNumberChange = e => setNewNumber(e.target.value);
-<input
-    value={newNumber}
-    onChange={handleNumberChange}
-/>
+<input value={newNumber} onChange={handleNumberChange} />;
+```
+
+This small error had me stuck for a while:
+
+```jsx
+return match.map(person => {
+    <p key={person.name}>
+        {person.name} - {person.number}
+    </p>;
+});
+```
+
+Do you see the error?
+
+It is the `{}` right after the arrow function.
+
+```jsx
+return match.map(person => (
+    <p key={person.name}>
+        {person.name} - {person.number}
+    </p>
+));
+```
+
+Because inside jsx `{}` is interpreted as JS expression. Remember multiline JSX is wrapped with `()`.
+
+Or you can do return twice:
+
+```jsx
+return match.map(person => {
+    return (
+        <p key={person.name}>
+            {person.name} - {person.number}
+        </p>
+    );
+});
 ```
