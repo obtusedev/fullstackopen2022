@@ -89,3 +89,17 @@ React comments:
 
 {/* */}
 ```
+
+Forms:
+
+form - onSubmit
+input - value, onChange, onClick
+
+```jsx
+// keeps the value in sync with state.
+const handleNumberChange = e => setNewNumber(e.target.value);
+<input
+    value={newNumber}
+    onChange={handleNumberChange}
+/>
+```
