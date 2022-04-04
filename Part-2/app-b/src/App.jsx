@@ -52,7 +52,6 @@ const App = () => {
     const handleNumberChange = e => setNewNumber(e.target.value);
 
     const handleFilterInputChange = e => {
-        console.log("shut");
         // reset the matched names so you don't end up with duplicates
         setMatch([]);
         // if filter input is set to empty the just return all persons
