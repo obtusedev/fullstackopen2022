@@ -1,21 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 
-const dummyData = [
-    { name: "Arto Hellas", number: "040-123456", id: 1 },
-    { name: "Ada Lovelace", number: "39-44-5323523", id: 2 },
-    { name: "Dan Abramov", number: "12-43-234345", id: 3 },
-    { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
-];
-
 const App = () => {
-    const [persons, setPersons] = useState(dummyData);
+    const [persons, setPersons] = useState([]);
     const [newName, setNewName] = useState("Jane Doe");
     const [newNumber, setNewNumber] = useState("123 456-7890");
     // for users that match input filter
     const [match, setMatch] = useState([]);
+
+    const fetchData = () => {
+        axios.get("http://localhost:3001/persons").then(res => setPersons(res.data));
+    }
+
+    useEffect(fetchData, []);
 
     const resetInput = e => {
         if (e.target.id === "name") {
