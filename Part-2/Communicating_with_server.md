@@ -190,3 +190,27 @@ const PersonForm = ({ events, values }) => {
 ```
 
 Pass a event function has `events{{handleClick}}` so that you can destructure it if needed.
+
+Effect hooks:
+
+```
+The Effect Hook lets you perform side effects on function components. Data fetching, setting up a subscription, and manually changing the DOM in React components are all examples of side effects.
+```
+
+`useEffect()`:
+
+```jsx
+useEffect(() => {
+    axios.get("site.com/api/user").then(response => setNotes(response.data));
+}, []);
+```
+
+For better readability:
+
+```jsx
+const fetchData = () => {
+    axios.get("site.com/api/user").then(response => setNotes(response.data));
+};
+
+useEffect(fetchData, []);
+```
