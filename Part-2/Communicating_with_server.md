@@ -214,3 +214,15 @@ const fetchData = () => {
 
 useEffect(fetchData, []);
 ```
+
+
+Only use concat if you want to add to past state and not if you want to replace the state altogether. This caught me up a bit. That way you don't need to "reset" to inital state.
+
+```javascript
+const countries, setCountries = useState([]);
+setCountries(countries.concat(newCountries));
+setCountries(newCountries);
+
+// I was doing this to try to reset state
+setCountries([]);
+```
