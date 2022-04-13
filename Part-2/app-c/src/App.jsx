@@ -5,29 +5,57 @@ import axios from "axios";
 function App() {
     const [countries, setCountries] = useState([]);
 
-    const fetchData = name => {
-        axios
-            .get(`https://restcountries.com/v3.1/name/${name}`)
-            .then(res => setCountries(res.data));
+    const fetchCountries = async name => {
+        let res = await axios.get("https://restcountries.com/v3.1/all");
+        let data = await res.data;
+        let regex = new RegExp(name, "i");
+        let matched = [];
+        data.filter(country => {
+            if (regex.test(country.name.common)) {
+                matched.push(country);
+            }
+        });
+        setCountries(matched);
     };
 
-    const handleInputChange = e => {
-        fetchData(e.target.value);
+    const handleInput = e => {
+        fetchCountries(e.target.value);
     };
 
-    //useEffect(fetchData, []);
-
-    const result = () => {
-      return countries.length > 10 ? "shit" : "yea"
-    }
+    const display = () => {
+        if (countries.length > 10) {
+            return <p>Too many matches, specify another filter</p>;
+        } else if (countries.length > 1 && countries.length <= 10) {
+            return countries.map(country => (
+                <p key={country.name.official}>{country.name.common}</p>
+            ));
+        } else if (countries.length === 1) {
+            return countries.map(country => {
+                return (
+                    <div key={country.name.common}>
+                        <h1>{country.name.common}</h1>
+                        <p>capital {country.capital}</p>
+                        <p>area {country.area}</p>
+                        <h3>languages:</h3>
+                        <ul>
+                            {Object.values(country.languages).map(lang => (
+                                <li key={lang}>{lang}</li>
+                            ))}
+                        </ul>
+                        <img
+                            src={country.flags.png}
+                            alt={`${country.name.common} flag`}
+                        />
+                    </div>
+                );
+            });
+        }
+    };
 
     return (
         <div>
-            find countries
-            <input type="text" onChange={handleInputChange} />
-            <div>
-                {result()}
-            </div>
+            find countries <input onChange={handleInput} />
+            <div>{display()}</div>
         </div>
     );
 }
