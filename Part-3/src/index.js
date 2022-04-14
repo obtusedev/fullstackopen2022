@@ -2,76 +2,87 @@ const express = require("express");
 const app = express();
 const PORT = 3001;
 
-let notes = [
+let phonebook = [
     {
         id: 1,
-        content: "HTML is easy",
-        date: "2022-05-30T17:30:31.098Z",
-        important: true,
+        name: "Arto Hellas",
+        number: "040-123456",
     },
     {
         id: 2,
-        content: "Browser can execute only Javascript",
-        date: "2022-05-30T18:39:34.091Z",
-        important: false,
+        name: "Ada Lovelace",
+        number: "39-44-5323523",
     },
     {
         id: 3,
-        content: "GET and POST are the most important methods of HTTP protocol",
-        date: "2022-05-30T19:20:14.298Z",
-        important: true,
+        name: "Dan Abramov",
+        number: "12-43-234345",
+    },
+    {
+        id: 4,
+        name: "Mary Poppendieck",
+        number: "39-23-6423122",
     },
 ];
 
-function generateId() {
-    const maxId =
-        notes.length > 0 ? Math.max(...notes.map(note => note.id)) : 0;
-    return maxId + 1;
+function generateId(id) {
+    return Math.floor(Math.random() * 10000);
 }
 
 app.use(express.json()); // handle post body data
 
-app.get("/", (req, res) => {
-    res.send("Hello World!");
+app.get("/info", (req, res) => {
+    res.send(
+        `<p>Phonebook has info for ${
+            phonebook.length
+        } people</p><p>${new Date()}</p>`
+    );
 });
 
-app.get("/api/notes", (req, res) => {
-    res.json(notes);
+app.get("/api/persons", (req, res) => {
+    res.json(phonebook);
 });
 
-app.get("/api/notes/:id", (req, res) => {
+app.get("/api/persons/:id", (req, res) => {
     const { id } = req.params;
-    const note = notes.find(note => note.id === parseInt(id));
-    if (note) {
-        res.json(note);
+    const person = phonebook.find(person => person.id === parseInt(id));
+    if (person) {
+        res.json(person);
     } else {
-        res.status(404).json({ error: "note not found" });
+        res.status(404).json({ error: "person not found" });
     }
 });
 
-app.post("/api/notes", (req, res) => {
+app.post("/api/persons", (req, res) => {
     const body = req.body;
-    if (!body.content) {
-        res.status(400).json({
-            error: "missing content"
-        });
+    if (!body.name || !body.number) {
+        res.status(400).json({ error: "missing required fields" });
         return;
     }
-    
-    const note = {
-        content: body.content,
-        important: body.important || false,
-        date: new Date(),
-        id: generateId()
+
+    if (phonebook.find(person => person.name === body.name)) {
+        res.status(400).json({ error: "name must be unique" });
+        return;
     }
-    notes = notes.concat(note);
-    res.json(note);
+    if (phonebook.find(person => person.number === body.number)) {
+        res.status(400).json({ error: "number must be unique" });
+        return;
+    }
+
+    const person = {
+        id: generateId(),
+        name: body.name,
+        number: body.number,
+    };
+    phonebook = phonebook.concat(person);
+    res.status(200).json({ message: "person created", content: phonebook });
 });
 
-app.delete("/api/notes/:id", (req, res) => {
+app.delete("/api/persons/:id", (req, res) => {
     const { id } = req.params;
-    note = notes.filter(note => note.id !== parseInt(id));
-    res.status(204).end();
+    phonebook = phonebook.filter(person => person.id !== parseInt(id));
+    // the course use 204 but it is not good for ux since it doesn't give good res message
+    res.status(200).json({ message: "person deleted", content: phonebook });
 });
 
 app.listen(PORT, () => {
