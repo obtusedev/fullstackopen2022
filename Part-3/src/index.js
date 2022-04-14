@@ -29,7 +29,21 @@ function generateId(id) {
     return Math.floor(Math.random() * 10000);
 }
 
+function requestLogger(req, res, next) {
+    console.log("Method:", req.method);
+    console.log("Path:  ", req.path);
+    console.log("Body:  ", req.body);
+    console.log("-------");
+    next();
+}
+
+function unknownEndpoint(req, res) {
+    res.status(404).json({ error: "unknown endpoint" });
+}
+
 app.use(express.json()); // handle post body data
+app.use(requestLogger);
+app.use(unknownEndpoint);
 
 app.get("/info", (req, res) => {
     res.send(
