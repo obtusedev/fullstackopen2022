@@ -8,7 +8,7 @@ notesRouter.get("/", async (req, res) => {
 
 notesRouter.get("/:id", async (req, res) => {
     const { id } = req.params;
-    let note = await Note.findOne({ id: id }, "-_id title content important");
+    let note = await Note.findOne({ id: id }, "-_id -__v");
     return note
         ? res.status(200).json(note)
         : res.status(404).json({ error: "note not found" });
@@ -17,7 +17,6 @@ notesRouter.get("/:id", async (req, res) => {
 notesRouter.post("/", async (req, res) => {
     const body = req.body;
     if (!body.title || !body.content) {
-        console.log(req.body);
         return res.status(400).json({ error: "missing required fields" });
     }
     const newNote = {
