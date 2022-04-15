@@ -3,3 +3,4 @@
 **/vite.config.js
 **/package-lock.json
 **/**/*.svg
+**/**/.env
